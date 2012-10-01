@@ -40,24 +40,36 @@ def parse(args)
 
   opt_parser.parse! args
 
-  options
+  return validate_options(options)
+  
+end
+
+def validate_options(options)
+  case ARGV[0]
+  when "migrate"
+    if options[:source].nil?
+      puts "Source URL required, see --help for more information"
+      exit
+    end
+    if options[:destination].nil?
+      options[:destination] = "#{Etc.getpwuid.dir}/unfuddle2git"
+      puts "No destination specified, using #{@destination}"
+    end
+  end
+  options 
 end
 
 #private 
 
 def generate_authors_txt(url)
-
   puts "Fetching repository authors.."
-  
   # do the svn checkout
   if @options[:username].nil?
     `cd #{Dir.tmpdir} && #{SVN} co #{url} #{TMP_DIR}`
   else
     `cd #{Dir.tmpdir} && #{SVN} co #{url} --username #{@options[:username]} #{TMP_DIR}`
   end
-  
   generate_authors_file
-  
 end
 
 def generate_authors_file
@@ -103,35 +115,19 @@ end
 
 ########################################################################################################################################
 
-puts "Starting migration.."
+# will be in init 
+puts "Starting migration..."
 
+# get the options
 @options = parse(ARGV)
-@destination = "#{Etc.getpwuid.dir}/unfuddle2git"
-
-# parse the arguments
-case ARGV[0]
-when "migrate"
-  
-  if @options[:source].nil?
-    puts "Source URL required, see --help for more information"
-    exit
-  end
-  
-  if @options[:destination]
-    @destination = @options[:destination]
-  else
-    puts "No destination specified, using #{@destination}"
-  end
-  
-end
 
 # get svn
 generate_authors_txt(@options[:source])
 
 # run git svn clone
-git_svn_clone(@options[:source],@destination)
+git_svn_clone(@options[:source],@options[:destination])
 
 # generate git stuff
-generate_git_ignore(@destination)
-generate_git_tags(@destination)
-generate_git_branches(@destination)
+generate_git_ignore(@options[:destination])
+generate_git_tags(@options[:destination])
+generate_git_branches(@options[:destination])
