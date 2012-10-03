@@ -44,7 +44,7 @@ class Kafka
       opt.banner = "Usage: kafka COMMAND [OPTIONS]"
       opt.separator  ""
       opt.separator  "Commands"
-      opt.separator  "     migrate: migrate an unfuddle svn repositry to git"
+      opt.separator  "     metamorph: metamorph a svn repository into a git repository"
       opt.separator  ""
       opt.separator  "Options"
       
@@ -72,7 +72,7 @@ class Kafka
 
   def validate_options(options)
     case ARGV[0]
-    when "migrate"
+    when "metamorph"
       if options[:source].nil?
         puts "Source URL required, see --help for more information"
         options[:valid] = false
