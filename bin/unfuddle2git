@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'unfuddle2git'
+
+u2git = Unfuddle2Git.new(ARGV)
