@@ -6,11 +6,11 @@ require 'tmpdir'
 require 'fileutils'
 require 'feedback'
 
-TMP_DIR = "unfuddle2git"
+TMP_DIR = "kafka"
 TMP_PATH = "#{Dir.tmpdir}/#{TMP_DIR}"
 SVN = `which svn`.strip
 
-class Unfuddle2Git
+class Kafka
 
   def initialize(args)
     @options = parse(args)
@@ -41,7 +41,7 @@ class Unfuddle2Git
     options = {}
     
     @opt_parser = OptionParser.new do |opt|
-      opt.banner = "Usage: unfuddle2git COMMAND [OPTIONS]"
+      opt.banner = "Usage: kafka COMMAND [OPTIONS]"
       opt.separator  ""
       opt.separator  "Commands"
       opt.separator  "     migrate: migrate an unfuddle svn repositry to git"
@@ -77,7 +77,7 @@ class Unfuddle2Git
         puts "Source URL required, see --help for more information"
         options[:valid] = false
       elsif options[:destination].nil?
-        options[:destination] = "#{Etc.getpwuid.dir}/unfuddle2git"
+        options[:destination] = "#{Etc.getpwuid.dir}/kafka"
         puts "No destination specified, using #{options[:destination]}"
       end
     else
