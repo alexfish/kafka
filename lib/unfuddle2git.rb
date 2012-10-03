@@ -19,7 +19,11 @@ class Unfuddle2Git
     end
   end
   
+  private 
+  
   def start
+    puts "Starting..."
+    
     # get svn    
     generate_authors_txt(@options[:source])
     # run git svn clone
@@ -28,6 +32,8 @@ class Unfuddle2Git
     generate_git_ignore(@options[:destination])
     generate_git_tags(@options[:destination])
     generate_git_branches(@options[:destination])
+    
+    puts "Success! :D"
   end
   
   def parse(args)
@@ -94,11 +100,11 @@ class Unfuddle2Git
   def generate_authors_file
    puts "Generating author file.."
    # move to svn repo folder & generate authors.txt
-   `cd #{TMP_PATH} && #{SVN} log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" <"$2">"}' | sort -u > authors-transform.txt ` 
+   `cd #{TMP_PATH} && #{SVN} log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" <"$2">"}' | sort -u > authors-transform.txt &>/dev/null` 
   end
 
   def git_svn_clone(url,destination)
-    puts "Fetch repository and converting to git.."
+    puts "Fetching repository and converting to git.."
     `cd #{TMP_PATH} && git svn clone #{url} --no-metadata -A authors-transform.txt --stdlayout #{destination}`
     FileUtils.rm_rf(TMP_PATH)
   end
