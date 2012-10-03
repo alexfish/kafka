@@ -3,7 +3,8 @@
 require 'optparse'
 require 'etc'
 require 'tmpdir'
-require "fileutils"
+require 'fileutils'
+require 'feedback'
 
 TMP_DIR = "unfuddle2git"
 TMP_PATH = "#{Dir.tmpdir}/#{TMP_DIR}"
@@ -13,7 +14,7 @@ class Unfuddle2Git
 
   def initialize(args)
     @options = parse(args)
-    
+    @feedback = Feedback.new
     if @options[:valid] 
       start
     end
@@ -33,7 +34,7 @@ class Unfuddle2Git
     generate_git_tags(@options[:destination])
     generate_git_branches(@options[:destination])
     
-    puts "Success! :D"
+    puts "Finished!"
   end
   
   def parse(args)
@@ -87,26 +88,32 @@ class Unfuddle2Git
   end
 
   def generate_authors_txt(url)
-    puts "Fetching repository authors.."
+    puts "Getting authors.."
+    
+    @feedback.display
     # do the svn checkout
     if @options[:username].nil?
       `cd #{Dir.tmpdir} && #{SVN} co #{url} #{TMP_DIR}`
     else
       `cd #{Dir.tmpdir} && #{SVN} co #{url} --username #{@options[:username]} #{TMP_DIR}`
     end
+    @feedback.hide
+    
     generate_authors_file
   end
 
   def generate_authors_file
    puts "Generating author file.."
    # move to svn repo folder & generate authors.txt
-   `cd #{TMP_PATH} && #{SVN} log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" <"$2">"}' | sort -u > authors-transform.txt &>/dev/null` 
+   `cd #{TMP_PATH} && #{SVN} log -q | awk -F '|' '/^r/ {sub("^ ", "", $2); sub(" $", "", $2); print $2" = "$2" <"$2">"}' | sort -u > authors-transform.txt` 
   end
 
   def git_svn_clone(url,destination)
     puts "Fetching repository and converting to git.."
-    `cd #{TMP_PATH} && git svn clone #{url} --no-metadata -A authors-transform.txt --stdlayout #{destination}`
+    @feedback.display
+    `cd #{TMP_PATH} && git svn clone #{url} --no-metadata -A authors-transform.txt --stdlayout #{destination} &>/dev/null`
     FileUtils.rm_rf(TMP_PATH)
+    @feedback.hide
   end
 
   def generate_git_ignore(git_repo_path)
