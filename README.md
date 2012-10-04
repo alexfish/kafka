@@ -7,15 +7,15 @@
 	
 	Options
 	    -s, --source SOURCE              the source svn repository url
-	    -u, --username USERNAME          the username to access the repository
-	    -d, --destination DESTINATION    the destination for the new git repository
+	    -u, --username USERNAME          the username to access the repository (optional)
+	    -d, --destination DESTINATION    the destination for the new git repository (optional)
 	    -h, --help                       help
 	    
-The username and destination options are optional, if on destination is specified the new git repo will be written to `~/kafka`. Here is an example usage with username, source and destination set:
+If no destination is specified the new git repo will be written to `~/kafka`. Here is an example usage with username, source and destination set:
 
 	$ kafka metamorph -s http://mysourcecontrol.com/svn/myrepo -u myusername -d ~/Desktop/myrepo
 	
-You will be promtped when the metamorph is complete, which could take a few hours for very large svn repositories! 
+The script will output what is happening and when the metamorph is complete, which could take a few hours for very large svn repositories! 
 
 ##What now?
 Once the metamorph is complete you will have a new git repository with tags and branches in tact. You can now simply add this repository to your existing version control system with the following commands:
