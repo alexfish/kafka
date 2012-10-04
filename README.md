@@ -1,5 +1,6 @@
-#KafkaKafka is a tiny gem which allows you to convert standard svn repositories to git. Mostly written as a tiny experiment, it was also born as a solution to the svn2git gem not working correctly with unufddle repositories. 
-Kaka expects your svn repository to use the standard svn layout:	- tags		- 1.0		- 1.1.0		- 2.0	- branches		- feature 1		- feature 2	- trunk	##InstallationInstalling Kafka is easy thanks to ruby gems:	gem install kafka	
+#Kafka
+Kafka is a tiny gem which allows you to convert standard svn repositories to git. Mostly written as a tiny experiment, it was also born as a solution to the svn2git gem not working correctly with unufddle repositories. 
+Kafka expects your svn repository to use the standard svn layout:	- tags		- 1.0		- 1.1.0		- 2.0	- branches		- feature 1		- feature 2	- trunk	##InstallationInstalling Kafka is easy thanks to ruby gems:	gem install kafka	
 ##Usage
 Once installed you can start Kafka from your command line interface. The following commands and options are available:
 		Commands
