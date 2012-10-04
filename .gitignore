@@ -14,6 +14,9 @@ Icon
 coverage
 coverage.data
 
+# gem file
+.gem
+
 # rdoc generated
 rdoc
 
