@@ -1,4 +1,5 @@
-#KafkaKafka is a tiny gem which allows you to convert standard svn repositories to git. Kaka expects your svn repository to use the standard svn layout:	- tags		- 1.0		- 1.1.0		- 2.0	- branches		- feature 1		- feature 2	- trunk	##InstallationInstalling Kafka is easy thanks to ruby gems:	gem install kafka	
+#KafkaKafka is a tiny gem which allows you to convert standard svn repositories to git. Mostly written as a tiny experiment, it was also born as a solution to the svn2git gem not working correctly with unufddle repositories. 
+Kaka expects your svn repository to use the standard svn layout:	- tags		- 1.0		- 1.1.0		- 2.0	- branches		- feature 1		- feature 2	- trunk	##InstallationInstalling Kafka is easy thanks to ruby gems:	gem install kafka	
 ##Usage
 Once installed you can start Kafka from your command line interface. The following commands and options are available:
 		Commands
@@ -14,6 +15,28 @@ The username and destination options are optional, if on destination is specifie
 
 	$ kafka metamorph -s http://mysourcecontrol.com/svn/myrepo -u myusername -d ~/Desktop/myrepo
 	
+You will be promtped when the metamorph is complete, which could take a few hours for very large svn repositories! 
+
+##What now?
+Once the metamorph is complete you will have a new git repository with tags and branches in tact. You can now simply add this repository to your existing version control system with the following commands:
+
+Move into the new repo
+
+	$ cd /path/to/my/repo
+	
+Point the repository to the git server
+
+	$ git remote add origin your-repo-url
+	
+Add all the files and create the commit
+	
+	$ git add -A
+	$ git commit -m 'Now available in git!'
+Make sure we also push the tags
+	
+	$ git push && git push --tags
+	
+Done!
 
 ##Help!
 
